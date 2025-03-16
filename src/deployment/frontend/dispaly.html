@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Predictions</title>
+</head>
+<body>
+    <h1>Live Model Predictions</h1>
+    <div id="predictions">Waiting for data...</div>
+
+    <script>
+        let socket;
+        const serverIP = "192.168.81.127"; // Change if needed
+        const serverPort = "8000";
+        const reconnectInterval = 1000; // 1 second
+
+        function connectWebSocket() {
+            socket = new WebSocket(`ws://${serverIP}:${serverPort}/ws`);
+
+            socket.onopen = () => {
+                console.log("WebSocket connected.");
+                document.getElementById("predictions").innerText = "Waiting for data...";
+            };
+
+            socket.onmessage = function(event) {
+                try {
+                    const predictions = JSON.parse(event.data);
+                    document.getElementById("predictions").innerHTML =
+                        `<strong>RNN:</strong> ${predictions.RNN}<br>
+                        <strong>LSTM:</strong> ${predictions.LSTM}<br>
+                        <strong>GRU:</strong> ${predictions.GRU}`;
+                } catch (error) {
+                    console.error("Error parsing WebSocket message:", error);
+                }
+            };
+
+            socket.onclose = function() {
+                console.log("WebSocket closed. Reconnecting...");
+                document.getElementById("predictions").innerText = "Reconnecting...";
+                setTimeout(connectWebSocket, reconnectInterval);
+            };
+
+            socket.onerror = function(error) {
+                console.error("WebSocket error:", error);
+                socket.close(); // Close and trigger reconnection
+            };
+        }
+
+        connectWebSocket();
+    </script>
+</body>
+</html>
