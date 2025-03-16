@@ -22,20 +22,21 @@ README.md   - Project overview and instructions
 ```
 
 ## 🔧 demonstration Setup Instructions  
+```
 1️⃣ **Install dependencies:**  
-```
+
 pip install -r requirements.txt
-```
+
 2️⃣ **Set up the Sensor Server App** ([Download here](https://github.com/umer0586/SensorServer))  
 3️⃣ **Connect system to mobile hotspot**  
 4️⃣ **Update IPv4 address in `main.py` and Sensor Server App**  
 5️⃣ **Run FastAPI backend:**  
-```
+
 python main.py
-```
+
 6️⃣ **Start sensor streaming from the mobile app**  
 7️⃣ **Open `frontend/display.html` to view predictions**  
-
+```
 ## 📊 Quantized Model Performance  
 | Model | Accuracy | Inference Time (ms) | Model Size (KB) |
 |--------|----------|------------------|--------------|
